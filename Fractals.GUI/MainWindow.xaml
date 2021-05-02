@@ -1,0 +1,242 @@
+﻿<Fluent:RibbonWindow x:Class="MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent" xmlns:Utilities="clr-namespace:Fractals.Utilities;assembly=Fractals.Utilities" xmlns:GUI="clr-namespace:Fractals.GUI" Title="{Binding Path=FileName, Converter={StaticResource FilenameWindowTitleConverter}}" Height="612" Width="703" MinWidth="300" MinHeight="250" ResizeMode="CanResize" Icon="/Fractals.GUI;component/App.ico">
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="{Binding Path=Fractal.State, Converter={StaticResource ProgressConverter}}" ProgressValue="{Binding Path=Fractal.Progress}"/>
+    </Window.TaskbarItemInfo>
+    <Window.InputBindings>
+        <KeyBinding Gesture="F5" Command="{x:Static GUI:MainWindow.RefreshCommand}"  />
+        <KeyBinding Gesture="Esc" Command="{x:Static GUI:MainWindow.StopCommand}"  />
+        <KeyBinding Gesture="Left" Command="{x:Static GUI:MainWindow.MoveLeftCommand}"  />
+        <KeyBinding Gesture="Right" Command="{x:Static GUI:MainWindow.MoveRightCommand}"  />
+        <KeyBinding Gesture="Up" Command="{x:Static GUI:MainWindow.MoveUpCommand}"  />
+        <KeyBinding Gesture="Down" Command="{x:Static GUI:MainWindow.MoveDownCommand}"  />
+        <KeyBinding Modifiers="Ctrl" Key="Plus" Command="{x:Static GUI:MainWindow.IncreaseZoomCommand}"  />
+        <KeyBinding Modifiers="Ctrl" Key="Minus" Command="{x:Static GUI:MainWindow.DecreaseZoomCommand}"  />
+        <KeyBinding Modifiers="Ctrl" Key="D0" Command="{x:Static GUI:MainWindow.ResetZoomCommand}"  />
+    </Window.InputBindings>
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static GUI:MainWindow.RefreshCommand}" x:Name="RefreshBinding" />
+        <CommandBinding Command="{x:Static GUI:MainWindow.StopCommand}" x:Name="StopBinding" />
+        <CommandBinding Command="{x:Static GUI:MainWindow.DecreaseZoomCommand}" x:Name="DecreaseZoomBinding" />
+        <CommandBinding Command="{x:Static GUI:MainWindow.IncreaseZoomCommand}" x:Name="IncreaseZoomBinding" />
+        <CommandBinding Command="{x:Static GUI:MainWindow.MoveLeftCommand}" x:Name="MoveLeftBinding" />
+        <CommandBinding Command="{x:Static GUI:MainWindow.MoveRightCommand}" x:Name="MoveRightBinding" />
+        <CommandBinding Command="{x:Static GUI:MainWindow.MoveUpCommand}" x:Name="MoveUpBinding" />
+        <CommandBinding Command="{x:Static GUI:MainWindow.MoveDownCommand}" x:Name="MoveDownBinding" />
+        <CommandBinding Command="{x:Static GUI:MainWindow.ResetZoomCommand}" x:Name="ResetZoomBinding" />
+    </Window.CommandBindings>
+    <Grid Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="100*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Fluent:Ribbon Name="Ribbon" Grid.Row="0">
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage Name="RibbonBackstage" Header="File">
+                    <Fluent:BackstageTabControl>
+                        <Fluent:Button Header="New" Name="NewButton"/>
+                        <Fluent:Button Header="Open" Name="OpenButton"/>
+                        <Fluent:Button Header="Save" Name="SaveButton"/>
+                        <Fluent:Button Header="Save As" Name="SaveAsButton"/>
+                        <Fluent:BackstageTabItem Header="Information"/>
+                        <Fluent:BackstageTabItem Header="Export">
+                            <GUI:ExportTab x:Name="ExportBackstageItem"/>
+                        </Fluent:BackstageTabItem> 
+                        <Fluent:BackstageTabItem Header="Share"/>
+                        <Fluent:BackstageTabItem Header="Print"/>
+                        <Fluent:BackstageTabItem Header="Recent"/>
+                        <Fluent:Button Header="Help"/>
+                        <Fluent:Button Header="Exit" Name="ExitButton"/>
+                    </Fluent:BackstageTabControl>
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
+            <Fluent:Ribbon.ContextualGroups>
+                <Fluent:RibbonContextualTabGroup Header="Fractal" Visibility="Visible" Name="FractalGroup" Background="Blue" BorderBrush="Blue" />
+                <Fluent:RibbonContextualTabGroup Header="InsidePainter" Visibility="Visible" Name="InsidePainterGroup" Background="Yellow" BorderBrush="Yellow" />
+                <Fluent:RibbonContextualTabGroup Header="OutsidePainter" Visibility="Visible" Name="OutsidePainterGroup" Background="Red" BorderBrush="Red" />
+            </Fluent:Ribbon.ContextualGroups>
+            <Fluent:RibbonTabItem Header="Controls">
+                <Fluent:RibbonGroupBox Header="Refresh">
+                    <Fluent:Button Name="StartPauseResumeButton" Header="Start" >
+                        <Button.ToolTip>
+                            <Fluent:ScreenTip Name="StartPauseResumeButtonScreenTip" />
+                        </Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button Name="StopButton" Header="Stop" Command="{x:Static GUI:MainWindow.StopCommand}" LargeIcon="Images\stop32.png" Icon="Images\stop16.png">
+                        <Button.ToolTip>
+                            <Fluent:ScreenTip Image="Images\stop24.png" Title="Stop (Esc)" Text="Stops the rendering process." DisableReason="There is no active rendering process."/>
+                        </Button.ToolTip>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Zoom Controls">
+                    <Fluent:Button Name="UndoZoomButton" Header="Undo" IsEnabled="{Binding Path=CanReset}" LargeIcon="Images\undozoom32.png" Icon="Images\undozoom16.png">
+                        <Button.ToolTip>
+                            <Fluent:ScreenTip Image="Images\undozoom24.png" Title="Undo Zoom" Text="Reverts the zoom state to the value&#10;it had before the last zooming." DisableReason="There is no zoom state that could be reverted."/>
+                        </Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button Name="ResetZoomButton" Header="Reset" IsEnabled="{Binding Path=CanReset}"  LargeIcon="Images\resetzoom32.png" Icon="Images\resetzoom16.png">
+                        <Button.ToolTip>
+                            <Fluent:ScreenTip Image="Images\resetzoom24.png" Title="Reset Zoom" Text="Resets the zoom state so that&#10;the default fractal is shown." DisableReason="The zoom state can not be reset."/>
+                        </Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button  Header="Increase" Command="{x:Static GUI:MainWindow.IncreaseZoomCommand}" LargeIcon="Images\increasezoom32.png" Icon="Images\increasezoom16.png">
+                        <Button.ToolTip>
+                            <Fluent:ScreenTip Image="Images\increasezoom24.png" Title="Increase Zoom (Ctrl++)" Text="Multiplies the zoom factor with factor 2,&#10;which causes a zoom-in on the center of the image."/>
+                        </Button.ToolTip>
+                    </Fluent:Button>
+                    <Fluent:Button  Header="Decrease" Command="{x:Static GUI:MainWindow.DecreaseZoomCommand}" LargeIcon="Images\decreasezoom32.png" Icon="Images\decreasezoom16.png">
+                        <Button.ToolTip>
+                            <Fluent:ScreenTip Image="Images\decreasezoom24.png" Title="Decrease Zoom (Ctrl+-)" Text="Multiplies the zoom factor with factor 1/2,&#10;which causes a zoom-out on the center of the image."/>
+                        </Button.ToolTip>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Zoom Info">
+                    <Fluent:TextBox InputWidth="115" Icon="Images\re16.png" Header="Re(Offset): "  Text="{Binding Path=ZoomState, Converter={StaticResource ZoomStateConverter}, ConverterParameter=OffsetRe}">
+                        <Fluent:TextBox.ToolTip>
+                            <Fluent:ScreenTip Image="Images\re24.png" Title="Re(Offset)" Text="The real (x-axis) part of the offset&#10;that is applied to move the region."/>
+                        </Fluent:TextBox.ToolTip>
+                    </Fluent:TextBox>
+                    <Fluent:TextBox InputWidth="115" Icon="Images\im16.png" Header="Im(Offset): "  Text="{Binding Path=ZoomState, Converter={StaticResource ZoomStateConverter}, ConverterParameter=OffsetIm}">
+                        <Fluent:TextBox.ToolTip>
+                            <Fluent:ScreenTip Image="Images\im24.png" Title="Im(Offset)" Text="The imaginary (y-axis) part of the offset&#10;that is applied to move the region."/>
+                        </Fluent:TextBox.ToolTip>
+                    </Fluent:TextBox>
+                    <Fluent:TextBox Visibility="Hidden" />
+                    <Fluent:TextBox InputWidth="100" Icon="Images\factor16.png" Header="Factor: "  Text="{Binding Path=ZoomState, Converter={StaticResource ZoomStateConverter}, ConverterParameter=Factor}">
+                        <Fluent:TextBox.ToolTip>
+                            <Fluent:ScreenTip Image="Images\factor24.png" Title="Factor" Text="The factor of magnification. A factor of 2 means that the&#10;displayed region would fit 4 times in the original image.&#10;Please note that due to precision issues the picture&#10;gets blurred when this factor exceeds 10^15."/>
+                        </Fluent:TextBox.ToolTip>
+                    </Fluent:TextBox>
+                    <Fluent:TextBox InputWidth="100" Header="Rotation: " Icon="Images\rotate16.png" Text="{Binding Path=ZoomState, Converter={StaticResource ZoomStateConverter}, ConverterParameter=Rotation}">
+                        <Fluent:TextBox.ToolTip>
+                            <Fluent:ScreenTip Image="Images\rotate24.png" Title="Rotation" Text="The Rotation (in degrees)&#10;that is applied to the fractal."/>
+                        </Fluent:TextBox.ToolTip>
+                    </Fluent:TextBox>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+            <Fluent:RibbonTabItem Header="Setup">
+                <Fluent:RibbonGroupBox Header="Fractal">
+                    <Fluent:DropDownButton Header="{Binding Path=Fractal.Name}" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Fluent:RibbonWindow, AncestorLevel=1}}" LargeIcon="{Binding Path=CurrentFractalPreviewImage}">
+                        <Fluent:DropDownButton.ToolTip>
+                            <Fluent:ScreenTip Title="{Binding Path=Fractal.Name}" Text="{Binding Path=Fractal.Description}" Image="{Binding Path=CurrentFractalTooltipImage}"/>
+                        </Fluent:DropDownButton.ToolTip>
+                        <Fluent:Gallery Name="FractalTypesGallery" ItemsSource="{Binding Path=FractalTypes}" />
+                    </Fluent:DropDownButton>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Outside">
+                    <Fluent:DropDownButton IsEnabled="{Binding Path=Fractal.PaintersChangeable}" Header="{Binding Path=Fractal.OutsidePainter.Name}" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Fluent:RibbonWindow, AncestorLevel=1}}" LargeIcon="{Binding Path=CurrentOutsidePainterPreviewImage}">
+                        <Fluent:DropDownButton.ToolTip>
+                            <Fluent:ScreenTip Title="{Binding Path=Fractal.OutsidePainter.Name}" Text="{Binding Path=Fractal.OutsidePainter.Description}" Image="{Binding Path=CurrentOutsidePainterTooltipImage}" DisableReason="The Fractal does not allow changing of painters."/>
+                        </Fluent:DropDownButton.ToolTip>
+                        <Fluent:Gallery Name="OutsidePainterTypesGallery" ItemsSource="{Binding Path=OutsidePainterTypes}" />
+                    </Fluent:DropDownButton>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Inside">
+                    <Fluent:DropDownButton IsEnabled="{Binding Path=Fractal.PaintersChangeable}" Header="{Binding Path=Fractal.InsidePainter.Name}" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Fluent:RibbonWindow, AncestorLevel=1}}" LargeIcon="{Binding Path=CurrentInsidePainterPreviewImage}">
+                        <Fluent:DropDownButton.ToolTip>
+                            <Fluent:ScreenTip Title="{Binding Path=Fractal.InsidePainter.Name}" Text="{Binding Path=Fractal.InsidePainter.Description}" Image="{Binding Path=CurrentInsidePainterTooltipImage}" DisableReason="The Fractal does not allow changing of painters."/>
+                        </Fluent:DropDownButton.ToolTip>
+                        <Fluent:Gallery Name="InsidePainterTypesGallery" ItemsSource="{Binding Path=InsidePainterTypes}" />
+                    </Fluent:DropDownButton>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+            <Fluent:RibbonTabItem Header="Settings">
+                <Fluent:RibbonGroupBox Header="General">
+                    <Fluent:CheckBox Header="Use Graphics Card" IsChecked="{Binding Path=UseGPU}">
+                        <Fluent:CheckBox.ToolTip>
+                            <Fluent:ScreenTip Title="Use Graphics Card" Text="When activated and the fractal type supports it,&#10;your graphics card is used for the calculation,&#10;which results in a massive speed-up." IsEnabled="{Binding Path=CanUseGPU}" DisableReason="A graphics card supporting OpenCL 1.0 with 64bit precision arithmetic (cl_khr_fp64) is required."/>
+                        </Fluent:CheckBox.ToolTip>
+                    </Fluent:CheckBox>
+                    <Fluent:CheckBox Header="Auto Refresh" IsChecked="{Binding Path=AutoRefresh}" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Fluent:RibbonWindow, AncestorLevel=1}}">
+                        <Fluent:CheckBox.ToolTip>
+                            <Fluent:ScreenTip Title="Auto Refresh" Text="When checked, the fractal is automatically re-rendered after each setting change."/>
+                        </Fluent:CheckBox.ToolTip>
+                    </Fluent:CheckBox>
+                    <Fluent:CheckBox Header="Enable Caching" IsChecked="{Binding Path=EnableCache}">
+                        <Fluent:CheckBox.ToolTip>
+                            <Fluent:ScreenTip Title="Enable Caching" Text="When using the CPU as computing device, it is possible to&#10;save the iteration results to memory and hard disk for reuse."/>
+                        </Fluent:CheckBox.ToolTip>
+                    </Fluent:CheckBox>
+                    <Fluent:TextBox InputWidth="40" Header="Thread Count: " Text="{Binding Path=ThreadCount}">
+                        <Fluent:TextBox.ToolTip>
+                            <Fluent:ScreenTip Title="Thread Count" Text="Number of processor cores to use when computing on the CPU."/>
+                        </Fluent:TextBox.ToolTip>
+                    </Fluent:TextBox>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+        <Utilities:RubberBandImage Name="FractalImage" Stretch="Fill" Grid.Row="1" />
+        <TextBox Height="76" Name="LogBox" HorizontalAlignment="Stretch" IsReadOnly="True" VerticalScrollBarVisibility="Visible" Grid.Row="2" Visibility="Collapsed" FontSize="12" />
+        <StatusBar HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Name="Statusbar" Height="25" Grid.Row="3">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            <StatusBarItem Grid.Column="0">
+                <ProgressBar Foreground="{Binding Path=State, Converter={StaticResource ProgressConverter}}" Width="120" Height="Auto" Value="{Binding Mode=OneWay, Path=Progress}" Maximum="1" ToolTip="The current rendering progress" ></ProgressBar>
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="1">
+                <TextBlock ToolTip="The current rendering progress" Text="{Binding Mode=OneWay, Path=Progress, Converter={StaticResource ProgressConverter}}" />
+            </StatusBarItem>
+            <Separator Grid.Column="2" />
+            <StatusBarItem Grid.Column="3">
+                <TextBlock ToolTip="Speed Meter, displays how many pixels are calculated per second" Text="{Binding Mode=OneWay, Path=Speed, Converter={StaticResource SpeedConverter}}" />
+            </StatusBarItem>
+            <Separator Grid.Column="4" />
+            <StatusBarItem Grid.Column="5">
+                <TextBlock ToolTip="Shows how long the last render took" Text="{Binding Mode=OneWay, Path=ElapsedTime, Converter={StaticResource TimeConverter}}" />
+            </StatusBarItem>
+            <Separator Name="ETASeparator" Grid.Column="6" />
+            <StatusBarItem Name="ETAItem" Grid.Column="7">
+                <TextBlock ToolTip="Remaining time to complete the calculation" Text="{Binding Mode=OneWay, Path=RemainingTime, Converter={StaticResource TimeConverter}, ConverterParameter=Minus}" />
+            </StatusBarItem>
+            <Separator Grid.Column="8" />
+            <StatusBarItem Grid.Column="10" Name="LogLabelItem">
+                <TextBlock ToolTip="The most recent log message; Double-Click to show all log messages." Text="{Binding Mode=OneWay, Path=LastLogMessage}" />
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="11">
+                <TextBlock Name="PositionLabel" ToolTip="Cursor position" HorizontalAlignment="Right" />
+            </StatusBarItem>
+            <Separator Name="PositionSeparator" Grid.Column="12" />
+            <StatusBarItem Grid.Column="13">
+                <TextBlock Name="MemoryUsageLabel" ToolTip="Amount of memory used by this application" Text="{Binding Mode=OneWay, Path=MemoryMeter.MemoryUsage, Converter={StaticResource MemorySizeConverter}}" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Fluent:RibbonWindow, AncestorLevel=1}}"  HorizontalAlignment="Right" />
+            </StatusBarItem>
+            <Separator Grid.Column="14" />
+            <StatusBarItem Grid.Column="15">
+                <TextBlock Name="CacheHardDriveUsageLabel" ToolTip="Amount of space used by fractal cache files" Text="{Binding Mode=OneWay, Path=MemoryMeter.CacheHardDriveUsage, Converter={StaticResource MemorySizeConverter}}" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Fluent:RibbonWindow, AncestorLevel=1}}" HorizontalAlignment="Right" />
+            </StatusBarItem>
+            <Separator Grid.Column="16" />
+            <StatusBarItem Grid.Column="17">
+                <TextBlock ToolTip="Size of the fractal image" Text="{Binding Mode=OneWay, Path=Size, Converter={StaticResource SizeConverter}}" HorizontalAlignment="Right" />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Fluent:RibbonWindow>

@@ -1,0 +1,247 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+CommandLineParser
+</name>
+</assembly>
+<members>
+<member name="P:CommandLineParser.ValueListArgument`1.Value">
+	<summary>
+ Gets the value.
+ </summary>
+	<value>The value.</value>
+</member><member name="P:CommandLineParser.ValueListArgument`1.ValueHelpString">
+	<summary>
+ Gets the value help string.
+ </summary>
+	<value>The value help string.</value>
+</member><member name="P:CommandLineParser.ValueListArgument`1.DefaultValue">
+	<summary>
+ Gets or sets the default value.
+ </summary>
+	<value>The default value.</value>
+</member><member name="M:CommandLineParser.ValueListArgument`1.#ctor(System.String,System.String,System.Collections.Generic.List{`0},System.Boolean,System.String)">
+	<summary>
+ Initializes a new instance of the <see cref="T:CommandLineParser.ValueListArgument`1"/> class.
+ </summary>
+	<param name="longName">The long name.</param>
+	<param name="shortName">The short name.</param>
+	<param name="required">if set to <c>true</c> [required].</param>
+</member><member name="M:CommandLineParser.ValueListArgument`1.#ctor(System.String,System.String,System.Collections.Generic.List{`0},System.String)">
+	<summary>
+ Initializes a new instance of the <see cref="T:CommandLineParser.ValueListArgument`1"/> class.
+ </summary>
+	<param name="longName">The long name.</param>
+	<param name="shortName">The short name.</param>
+	<param name="defaultValue">The default value.</param>
+	<param name="description">The description.</param>
+</member><member name="M:CommandLineParser.ValueListArgument`1.Parse(System.String)">
+	<summary>
+ Parses the specified value.
+ </summary>
+	<param name="value">The value.</param>
+</member><member name="P:CommandLineParser.ValueArgument`1.Value">
+	<summary>
+ Gets the value.
+ </summary>
+	<value>The value.</value>
+</member><member name="P:CommandLineParser.ValueArgument`1.DefaultValue">
+	<summary>
+ Gets or sets the default value.
+ </summary>
+	<value>The default value.</value>
+</member><member name="M:CommandLineParser.ValueArgument`1.#ctor(System.String,System.String,`0,System.String,System.Func{System.String,`0})">
+	<summary>
+ Initializes a new instance of the <see cref="T:CommandLineParser.ValueArgument`1"/> class.
+ </summary>
+	<param name="longName">The long name.</param>
+	<param name="shortName">The short name.</param>
+	<param name="defaultValue">The default value.</param>
+	<param name="description">The description.</param>
+	<param name="convertFunc">The convert func.</param>
+</member><member name="M:CommandLineParser.ValueArgument`1.#ctor(System.String,System.String,`0,System.String)">
+	<summary>
+ Initializes a new instance of the <see cref="T:CommandLineParser.ValueArgument`1"/> class.
+ </summary>
+	<param name="longName">The long name.</param>
+	<param name="shortName">The short name.</param>
+	<param name="defaultValue">The default value.</param>
+	<param name="description">The description.</param>
+</member><member name="M:CommandLineParser.ValueArgument`1.Parse(System.String)">
+	<summary>
+ Parses the specified value.
+ </summary>
+	<param name="value">The value.</param>
+</member><member name="M:CommandLineParser.ValueArgument`1.Convert``1(System.String)">
+	<summary>
+ Converts the specified value.
+ </summary>
+	<param name="value">The value.</param>
+	<returns></returns>
+</member><member name="P:CommandLineParser.ValueArgument`1.ValueHelpString">
+	<summary>
+ Gets the value help string.
+ </summary>
+	<value>The value help string.</value>
+</member><member name="P:CommandLineParser.SwitchArgument.Value">
+	<summary>
+ Gets a value indicating whether this <see cref="T:CommandLineParser.SwitchArgument"/> is value.
+ </summary>
+	<value><c>true</c> if value; otherwise, <c>false</c>.</value>
+</member><member name="P:CommandLineParser.SwitchArgument.ValueHelpString">
+	<summary>
+ Gets the value help string.
+ </summary>
+	<value>The value help string.</value>
+</member><member name="P:CommandLineParser.SwitchArgument.DefaultValue">
+	<summary>
+ Gets or sets a value indicating whether [default value].
+ </summary>
+	<value><c>true</c> if [default value]; otherwise, <c>false</c>.</value>
+</member><member name="M:CommandLineParser.SwitchArgument.#ctor(System.String,System.String,System.Boolean,System.String)">
+	<summary>
+ Initializes a new instance of the <see cref="T:CommandLineParser.SwitchArgument"/> class.
+ </summary>
+	<param name="longName">The long name.</param>
+	<param name="shortName">The short name.</param>
+</member><member name="M:CommandLineParser.SwitchArgument.Parse(System.String)">
+	<summary>
+ Parses the specified value.
+ </summary>
+	<param name="value">The value.</param>
+</member><member name="P:CommandLineParser.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:CommandLineParser.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:CommandLineParser.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="P:CommandLineParser.ICommandLineExtender.CommandLineArguments">
+	<summary>
+ Gets the arguments.
+ </summary>
+	<value>The arguments.</value>
+</member><member name="M:CommandLineParser.ICommandLineExtender.EvaluateCommandLineArguments">
+	<summary>
+ Evaluates the arguments.
+ </summary>
+</member><member name="P:CommandLineParser.EnumeratedValueArgument.Value">
+	<summary>
+ Gets the value.
+ </summary>
+	<value>The value.</value>
+</member><member name="P:CommandLineParser.EnumeratedValueArgument.ValueHelpString">
+	<summary>
+ Gets the value help string.
+ </summary>
+	<value>The value help string.</value>
+</member><member name="P:CommandLineParser.EnumeratedValueArgument.DefaultValue">
+	<summary>
+ Gets or sets the default value.
+ </summary>
+	<value>The default value.</value>
+</member><member name="P:CommandLineParser.EnumeratedValueArgument.PossibleValues">
+	<summary>
+ Gets or sets the possible values.
+ </summary>
+	<value>The possible values.</value>
+</member><member name="M:CommandLineParser.EnumeratedValueArgument.#ctor(System.String,System.String,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+	<summary>
+ Initializes a new instance of the <see cref="T:CommandLineParser.EnumeratedValueArgument"/> class.
+ </summary>
+	<param name="longName">The long name.</param>
+	<param name="shortName">The short name.</param>
+	<param name="defaultValue">The default value.</param>
+	<param name="description">The description.</param>
+	<param name="possibilities">The possibilities.</param>
+</member><member name="M:CommandLineParser.EnumeratedValueArgument.Parse(System.String)">
+	<summary>
+ Parses the specified value.
+ </summary>
+	<param name="value">The value.</param>
+</member><member name="P:CommandLineParser.CommandLineParser.Arguments">
+	<summary>
+ Gets or sets the arguments.
+ </summary>
+	<value>The arguments.</value>
+</member><member name="P:CommandLineParser.CommandLineParser.ComplainUnknown">
+	<summary>
+ Gets or sets a value indicating whether to throw an exception if an unknown argument was passed.
+ </summary>
+	<value><c>true</c> if [complain unknown]; otherwise, <c>false</c>.</value>
+</member><member name="M:CommandLineParser.CommandLineParser.PrintHelp(System.Boolean,System.String)">
+	<summary>
+ Prints the help.
+ </summary>
+</member><member name="M:CommandLineParser.CommandLineParser.PrintHelp">
+	<summary>
+ Prints the help.
+ </summary>
+</member><member name="M:CommandLineParser.CommandLineParser.CheckWidth(System.String,System.Int32)">
+	<summary>
+ Checks the width.
+ </summary>
+	<param name="s">The s.</param>
+	<param name="maxLength">Length of the max.</param>
+	<returns></returns>
+</member><member name="M:CommandLineParser.CommandLineParser.GetArgs">
+	<summary>
+ Gets the args.
+ </summary>
+	<returns></returns>
+</member><member name="M:CommandLineParser.CommandLineParser.Parse">
+	<summary>
+ Parses this instance.
+ </summary>
+</member><member name="M:CommandLineParser.CommandLineParser.ParseArgument(CommandLineParser.Argument,System.String)">
+	<summary>
+ Parses the argument.
+ </summary>
+	<param name="a">A.</param>
+	<param name="cmd">The CMD.</param>
+</member><member name="P:CommandLineParser.Argument.LongName">
+	<summary>
+ Gets or sets the long name.
+ </summary>
+	<value>The long name.</value>
+</member><member name="P:CommandLineParser.Argument.ShortName">
+	<summary>
+ Gets or sets the short name.
+ </summary>
+	<value>The short name.</value>
+</member><member name="P:CommandLineParser.Argument.Description">
+	<summary>
+ Gets or sets the description.
+ </summary>
+	<value>The description.</value>
+</member><member name="P:CommandLineParser.Argument.IsParsed">
+	<summary>
+ Gets or sets a value indicating whether this instance is parsed.
+ </summary>
+	<value><c>true</c> if this instance is parsed; otherwise, <c>false</c>.</value>
+</member><member name="M:CommandLineParser.Argument.Parse(System.String)">
+	<summary>
+ Parses the specified value.
+ </summary>
+	<param name="value">The value.</param>
+</member><member name="P:CommandLineParser.Argument.ValueHelpString">
+	<summary>
+ Gets the value help string.
+ </summary>
+	<value>The value help string.</value>
+</member><member name="M:CommandLineParser.Argument.#ctor(System.String,System.String,System.String)">
+	<summary>
+ Initializes a new instance of the <see cref="T:CommandLineParser.Argument"/> class.
+ </summary>
+	<param name="longName">The long name.</param>
+	<param name="shortName">The short name.</param>
+</member>
+</members>
+</doc>
